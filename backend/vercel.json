@@ -3,7 +3,7 @@
   "rewrites": [
     { 
       "source": "/employees",
-      "destination": "/api"
+      "destination": "https://hanul-erp-backend.vercel.app/api"
     }
   ]
 }
