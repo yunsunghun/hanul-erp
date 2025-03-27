@@ -2,8 +2,12 @@
   "version": 2,
   "rewrites": [
     { 
-      "source": "/employees",
-      "destination": "https://hanul-erp-backend.vercel.app/api"
+      "source": "/api/employees",
+      "destination": "https://hanul-erp-backend.vercel.app/api/employees"
+    },
+    { 
+      "source": "/employees/:id",
+      "destination": "https://hanul-erp-backend.vercel.app/api/employees/[id.js"
     }
   ]
 }
