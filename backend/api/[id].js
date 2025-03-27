@@ -1,35 +1,39 @@
-import { MongoClient, ObjectId } from 'mongodb';
-
+import { MongoClient } from "mongodb";
 export default async function handler(req, res) {
-  const { id } = req.query;
-  const client = new MongoClient(process.env.MONGODB_URI);
+  // 몽고db 클라이언트 URL
+  const client = new MongoClient(process.env.MONGOBD_URL);
+  //몽고 DB 클라이언트 연결 수립
+  await client.connect();
+  const db = client.db("hr");
+  const employees = db.collection("employees");
+
+  //GET 요청 or POST 요청 인지에 따라서로다른 데이터베이스 요청 처리
 
   try {
-    await client.connect();
-    const database = client.db('yourDatabaseName');
-    const employees = database.collection('employees');
-
     switch (req.method) {
       case 'PUT':
-        const updatedEmployee = req.body;
+        const updateEmployee = req.doby;
         const updateResult = await employees.updateOne(
-          { _id: new ObjectId(id) },
-          { $set: updatedEmployee }
+          {_id: new Object(id)},
+          {$set: updateEmployee}
         );
-        res.status(200).json(updateResult);
+        res.status(200).json(allEmployees);
         break;
-      
       case 'DELETE':
-        const deleteResult = await employees.deleteOne({ _id: new ObjectId(id) });
-        res.status(200).json(deleteResult);
+        const newEmployee=req.body;
+        const newEmployee = await coll.insertOne(newEmployee);
+        res.status(200).json(result);
         break;
-      
       default:
-        res.setHeader('Allow', ['PUT', 'DELETE']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        res.status(405).end('${req.method}는 허용되지않습니다!')
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      error: e.message,
+      msg: '서버 통신 오류, 관리자 문의 요망!'
+    })
   } finally {
     await client.close();
   }
